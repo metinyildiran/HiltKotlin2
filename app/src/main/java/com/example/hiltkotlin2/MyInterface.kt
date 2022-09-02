@@ -5,6 +5,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import javax.inject.Qualifier
 import javax.inject.Singleton
 
 interface MyInterface {
@@ -28,10 +29,18 @@ abstract class MyModule {
 @InstallIn(SingletonComponent::class)
 class MyModule {
 
+    @FirstImplementer
     @Singleton
     @Provides
     fun providerFunction(): MyInterface {
         return InterfaceImplementer()
+    }
+
+    @SecondImplementer
+    @Singleton
+    @Provides
+    fun secondProviderFunction(): MyInterface {
+        return SecondInterfaceImplementer()
     }
 
     @Singleton
@@ -40,3 +49,11 @@ class MyModule {
         return Gson()
     }
 }
+
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
+annotation class FirstImplementer
+
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
+annotation class SecondImplementer
